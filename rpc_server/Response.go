@@ -6,9 +6,18 @@ import (
 )
 
 type Response struct {
-	msg 	serverbase.IMessage
-	Conn	serverbase.IConnection
-	Param map[string]string
+	msg 			serverbase.IMessage
+	Conn			serverbase.IConnection
+	Param 			map[string]string
+	belongServer	serverbase.IServer
+}
+
+func (r *Response) SetBelongServer(server serverbase.IServer) {
+	r.belongServer = server
+}
+
+func (r *Response) GetBelongServer() serverbase.IServer {
+	return r.belongServer
 }
 
 func NewResponse(message serverbase.IMessage, conn serverbase.IConnection) *Response {

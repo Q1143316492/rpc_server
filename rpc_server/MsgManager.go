@@ -11,7 +11,7 @@ type MsgManager struct {
 	BelongServer	serverbase.IServer
 }
 
-func NewMsgManager(server *Server) *MsgManager {
+func NewMsgManager(server serverbase.IServer) serverbase.IMsgManager {
 	return &MsgManager{
 		routers:make(map[int32]serverbase.IRouter),
 		BelongServer:server,

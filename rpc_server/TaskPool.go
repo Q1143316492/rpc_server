@@ -15,7 +15,7 @@ type TaskPool struct {
 	BelongServer		serverbase.IServer
 }
 
-func NewTaskPool(server *Server) *TaskPool {
+func NewTaskPool(server serverbase.IServer) *TaskPool {
 	p := &TaskPool{
 		BelongServer:server,
 	}
@@ -43,10 +43,15 @@ func (t *TaskPool) StartOneWorker(id int, worker chan serverbase.IRequest) {
 func (t *TaskPool) DoHandler(req serverbase.IRequest) {
 	router, err := t.BelongServer.GetMsgManager().GetRouter(req.GetMessage().GetMsgType())
 	if err != nil {
+		// req.GetConn().SendExitSign()
 		fmt.Println("DoHandler fail. request msg type not found")
 		return
 	}
+
 	res := NewResponse(nil, nil)
+
+	req.SetBelongServer(t.BelongServer)
+	res.SetBelongServer(t.BelongServer)
 
 	router.PreHandler(req, res)
 	router.Handler(req, res)
@@ -57,24 +62,20 @@ func (t *TaskPool) DoHandler(req serverbase.IRequest) {
 	res.GetMessage().SetData(res.InitParam())
 	res.GetMessage().SetDataLen(int32(len(res.GetMessage().GetData())))
 
-	fmt.Printf("request:")
-	req.GetMessage().ShowData()
-	fmt.Printf("response:")
-	res.GetMessage().ShowData()
-
 	if err = t.DoResponse(res); err != nil {
-		fmt.Println("response error", err)
+		fmt.Println("response error:", err)
 	}
 }
 
 func (t *TaskPool) DoResponse(response serverbase.IResponse) error {
-	if response.GetMessage() == nil || response.GetMessage().GetDataLen() == 0{
+	ser := NewSerializable()
+	data, err := ser.Serialize(response.GetMessage())
+	if response.GetMessage() == nil || response.GetMessage().GetDataLen() == 0 {
+		response.GetConn().SendExitSign()
 		return errors.New(fmt.Sprintln("response message empty"))
 	}
-	ser := NewSerializable()
-
-	data, err := ser.Serialize(response.GetMessage())
 	if err != nil {
+		response.GetConn().SendExitSign()
 		return errors.New(fmt.Sprintln("response serialize fail. err = ", err))
 	}
 	response.GetConn().SendByteToClientBuffer(data)

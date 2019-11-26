@@ -21,6 +21,10 @@ type IServer interface {
 
 	LoadIntConf(key string, defaultVal int) int
 
+	GetConfManager() IConfManager
+
+	SetConfManager(IConfManager)
+	
 	// 路由
 	AddRouter(id int, router IRouter) (bool, error)
 

@@ -1,7 +1,11 @@
 {
   "SERVER_VERSION"      : "version_1.0",
   "SERVER_LISTEN_IP"    : "127.0.0.1",
-  "SERVER_LISTEN_PORT"  : "7736",
+  "SERVER_LISTEN_PORT"  : "7737",
 
-  "LOG_LEVEL" : "DEBUG"
+  "LOG_LEVEL" : "DEBUG",
+
+  "TESTING_MACHINE_PATH"  : "/home/weilinchen/workspace/schoolfinal/onlinejudge/oj",
+  "SANDBOX_DIR"           : "/home/weilinchen/workspace/schoolfinal/sandboxes",
+  "SANDBOX_IMAGE_TAR"     : "/home/weilinchen/workspace/schoolfinal/sandbox/image.tar"
 }

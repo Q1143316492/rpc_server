@@ -21,13 +21,13 @@ type Server struct {
 
 	Port	 	 string
 
-	msgManager   *MsgManager
+	msgManager   serverbase.IMsgManager
 
-	taskPool     *TaskPool
+	taskPool     serverbase.ITaskPool
 
-	connManager	 *ConnManager
+	connManager	 serverbase.IConnManager
 
-	confManager  *conf.GlobalConf
+	confManager  serverbase.IConfManager
 
 	logManager 	 *tools.LogManager
 
@@ -36,7 +36,7 @@ type Server struct {
 func NewServer() (*Server, error) {
 	s := &Server{}
 	var err error
-	s.confManager, err = conf.NewGlobalConf()
+	s.confManager, err = NewConfManager()
 	if err != nil {
 		fmt.Println("new server fail. err = ", err)
 		return nil, err
@@ -78,6 +78,14 @@ func (s *Server) LoadIntConf(key string, defaultVal int) int {
 		return defaultVal
 	}
 	return v
+}
+
+func (s *Server) GetConfManager() serverbase.IConfManager {
+	return s.confManager
+}
+
+func (s *Server) SetConfManager(manager serverbase.IConfManager) {
+	s.confManager = manager
 }
 
 func (s *Server) GetMsgManager() serverbase.IMsgManager {

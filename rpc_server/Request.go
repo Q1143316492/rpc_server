@@ -2,17 +2,26 @@ package rpc_server
 
 import (
 	"errors"
-	iface "rpc_server/server_base"
+	"rpc_server/server_base"
 	"rpc_server/tools"
 )
 
 type Request struct {
-	msg   iface.IMessage
-	Conn  iface.IConnection
-	Param map[string]string
+	msg   			serverbase.IMessage
+	Conn  			serverbase.IConnection
+	Param 			map[string]string
+	belongServer	serverbase.IServer
 }
 
-func NewRequest(message iface.IMessage, Conn iface.IConnection) *Request {
+func (r *Request) SetBelongServer(server serverbase.IServer) {
+	r.belongServer = server
+}
+
+func (r *Request) GetBelongServer() serverbase.IServer {
+	return r.belongServer
+}
+
+func NewRequest(message serverbase.IMessage, Conn serverbase.IConnection) *Request {
 	req := &Request{
 		msg:message,
 		Conn:Conn,
@@ -48,18 +57,18 @@ func (r *Request) AddParam(key string, val string) error {
 	return nil
 }
 
-func (r *Request) GetMessage() iface.IMessage {
+func (r *Request) GetMessage() serverbase.IMessage {
 	return r.msg
 }
 
-func (r *Request) SetMessage(msg iface.IMessage) {
+func (r *Request) SetMessage(msg serverbase.IMessage) {
 	r.msg = msg
 }
 
-func (r *Request) GetConn() iface.IConnection {
+func (r *Request) GetConn() serverbase.IConnection {
 	return r.Conn
 }
 
-func (r *Request) SetConn(conn iface.IConnection) {
+func (r *Request) SetConn(conn serverbase.IConnection) {
 	r.Conn = conn
 }

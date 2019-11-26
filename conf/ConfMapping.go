@@ -17,7 +17,7 @@ const MAX_CONNECT_LIMIT 	= 1024
 
 // Message
 
-const MAX_MESSAGE_LEN		= 1024
+const MAX_MESSAGE_LEN		= 65535
 
 // Task Queue
 

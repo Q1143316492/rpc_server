@@ -15,4 +15,8 @@ type IRequest interface {
 	AddParam(string, string) error
 
 	InitParam(param map[string]string, data []byte)
+
+	GetBelongServer() IServer
+
+	SetBelongServer(server IServer)
 }

@@ -15,4 +15,8 @@ type IResponse interface {
 	AddParam(string, string) error
 
 	InitParam() []byte
+
+	GetBelongServer() IServer
+
+	SetBelongServer(server IServer)
 }

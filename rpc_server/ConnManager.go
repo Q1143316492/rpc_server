@@ -13,7 +13,7 @@ type ConnManager struct {
 	connLock    	sync.RWMutex
 }
 
-func NewConnManager(server *Server) *ConnManager {
+func NewConnManager(server serverbase.IServer) *ConnManager {
 	return &ConnManager{
 		connections:make(map[int64]serverbase.IConnection),
 		BelongServer:server,

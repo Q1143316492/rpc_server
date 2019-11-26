@@ -10,7 +10,7 @@ import (
 
 func init() {
 	var err error
-	conf.PROJECT_PATH, err = conf.GetProjectPath()
+	conf.PROJECT_PATH, err = rpc_server.GetProjectPath()
 	if err != nil {
 		log.Fatalln("get project path fail")
 	}

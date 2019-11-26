@@ -3,18 +3,20 @@ package main
 import (
 	"fmt"
 	"net"
+	"rpc_server/rpc_server"
 )
 
 func main() {
 
-	conn, err := net.Dial("tcp", "127.0.0.1:7736")
+	conn, err := net.Dial("tcp", "127.0.0.1:7737")
 	if err != nil{
 		fmt.Println("client dial err:", err)
 		return
 	}
-	ser := cnet.NewSerializable()
+	// request
+	ser := rpc_server.NewSerializable()
 	str := "name=cwl&id=1"
-	msg := cnet.NewMessage(int32(len(str)),1001,[]byte(str))
+	msg := rpc_server.NewMessage(int32(len(str)),1001,[]byte(str))
 	data, err := ser.Serialize(msg)
 	if err != nil {
 		fmt.Println("Serialize msg fail")
@@ -26,6 +28,7 @@ func main() {
 		return
 	}
 
+	// response
 	msg1, err := ser.GetSerializeMsg(conn.(*net.TCPConn))
 	if err != nil {
 		fmt.Println("get msg from net error")
